@@ -8,6 +8,32 @@ class Postform extends PureComponent {
       title: "",
       body: "",
     };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+
+    const post = {
+      title: this.state.title,
+      body: this.state.body,
+    };
+
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(post),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   }
 
   render() {
@@ -15,7 +41,7 @@ class Postform extends PureComponent {
       <div>
         <h1>Post</h1>
 
-        <form action="">
+        <form action="" onSubmit={this.onSubmit}>
           <div>
             <label htmlFor="">Title: </label>
             <br />
